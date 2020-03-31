@@ -11,7 +11,10 @@
     <meta name="_token" content="{{ csrf_token() }}">
 </head>
 <header style="text-align:center">
-    <h1>People Finance</h1>
+  @php
+                  $agence =$myFonction->getBranch(session("BranchCode"));
+  @endphp
+    <h1> {{$agence}} </h1>
 </header>
 <hr>
     <div class="container" >
@@ -22,13 +25,13 @@
                         @php
                         if($lePost!=null){
                          $nomPost =  $myFonction->getPost($lePost);
-                       
+
                         $nomPost = $nomPost->first();
                         echo  $nomPost->intitulePost;
                          }
 
                         @endphp
-                      
+
                     @endif
                     </h2> </caption>
                     <thead>
@@ -88,4 +91,3 @@
                     </tbody>
                   </table>
     </div>
-

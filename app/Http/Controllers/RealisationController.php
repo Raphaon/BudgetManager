@@ -8,6 +8,8 @@ use App\Models\Employe;
 use App\exercice;
 use App\myFonction;
 use App\postbudgetaire;
+use App\Models\Compte;
+use App\Models\Ligne_mvt_Compte;
 use DB;
 use PDF;
 class RealisationController extends Controller
@@ -75,8 +77,9 @@ class RealisationController extends Controller
                 ->havingRaw('SUM(price) > ?', [2500])
                 ->get();
                 */
+                $comptes = Compte::where('isDelete',0 )->get();
 
-        return view("realisation.new", compact("post", "employe", 'exo'));
+        return view("realisation.new", compact("post", "employe", 'exo', 'comptes'));
     }
 
 
@@ -152,7 +155,7 @@ class RealisationController extends Controller
         ->where('prevision.exercicePrevi', session('codeExo'))
         ->where('refferenceRea', $code)
         ->get();
-        //dd($realisation);
+        
         return view("realisation.show", compact("realisation"));
 
     }
@@ -167,7 +170,7 @@ class RealisationController extends Controller
         ->where('prevision.exercicePrevi', session('codeExo'))
         ->where('refferenceRea', $code)
         ->get();
-        //dd($realisation);
+       
         return view("realisation.show", compact("realisation"));
 
     }
@@ -246,6 +249,7 @@ class RealisationController extends Controller
     public function printPreValidation(Request $request)
     {
     
+    
         $fonction = new myFonction();
         if($fonction->isInSession())
         {
@@ -271,11 +275,13 @@ class RealisationController extends Controller
         {
             return  redirect()->to("login");
         }
-        $fonction = new myFonction;
+       
         $montantSortie = session("montant");
         $codePost = session('code');
         $autoriseBy = session("autoriseBy");
+        //dd($autoriseBy);
         $doneBy = session("doneBy");
+        //dd($doneBy);
         $observation = session("observation");
         if(empty($montantSortie) or empty($codePost) or empty($doneBy) or empty($autoriseBy))
         {
@@ -337,7 +343,7 @@ class RealisationController extends Controller
         $employe_effectuer = htmlspecialchars(request("employe_effectuer"));
         $employe_autorise = htmlspecialchars(request("employe_autorise"));
         $fonction = new myFonction;
-        //dd(request('post'));
+        
         $post  = $fonction->getPost(htmlspecialchars(request("post")))->first();
         $prevision = $post->idPrevision;
         $realisation  = new realisation;
@@ -349,7 +355,24 @@ class RealisationController extends Controller
         $realisation->isDelete = 0;
         $realisation->autorise_par = $employe_autorise;
         $realisation->effectuer_par = $employe_effectuer;
+        //dd($realisation);
         $realisation->save();
+
+
+        $mvt_compte = new Ligne_mvt_Compte();
+        $mvt_compte->refference_ligne = $reff;
+        $mvt_compte->montant_mvt = $montantSortie;
+        $mvt_compte->libelle = $observation;
+        $mvt_compte->sens = 'Debit';
+        $mvt_compte->description = $observation;
+        $mvt_compte->reffCompte= htmlspecialchars(request('compteConcern'));
+        $mvt_compte->date_mvt = $dateRea;
+        $mvt_compte->codeBranch = session('BranchCode');
+        $mvt_compte->isDelete = 0;
+        $mvt_compte->save();
+
+
+
         session()->flash('addSucceedMvt', "Operation effectuer avec succes");
         return redirect()->back();
 

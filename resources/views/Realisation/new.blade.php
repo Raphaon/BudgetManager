@@ -74,6 +74,36 @@
                                         </div>
                                     </div>
 
+
+
+
+
+
+                                     <div class="form-group">
+                                    <label class="control-label col-sm-4" >Compte :</label>
+                                    <div class="col-sm-8">
+
+                                       <select class="form-control" name="compteConcern"  required>
+                                           <option value="" selected >Compte à mouvementer </option>
+                                           @foreach ($comptes as $values )
+                                            <option value="{{ $values->numCompte }}">{{ $values->libelle }}</option>
+                                           @endforeach
+
+                                       </select>
+                                        <p class="erros text-center alert alert-danger hidden"></p>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-4" >Effectué par :</label>
                                     <div class="col-sm-8">

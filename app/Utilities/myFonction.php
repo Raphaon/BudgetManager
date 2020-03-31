@@ -72,6 +72,30 @@ class myFonction
       }
 
 
+      // Obtenir le solde d'un compte 
+
+      public function getAccountBalance($compte1)
+      {
+        $debit = DB::table('ligne_mvt_compte')
+        ->where('ligne_mvt_compte.isDelete', 0)
+        ->leftJoin('compte', 'compte.numCompte', '=', 'ligne_mvt_compte.reffCompte')
+        ->where('numCompte', $compte1)
+         ->where('codeBranch', session('BranchCode'))
+        ->where('sens', 'Debit')
+        ->SUM('montant_mvt');
+        //dd($debit);
+        $credit =DB::table('ligne_mvt_compte')
+        ->where('ligne_mvt_compte.isDelete', 0)
+        ->leftJoin('compte', 'compte.numCompte', '=', 'ligne_mvt_compte.reffCompte')
+        ->where('numCompte', $compte1)
+        ->where('codeBranch', session('BranchCode'))
+        ->where('sens', 'credit')
+        ->SUM('montant_mvt');
+     //dd($credit-$debit);
+        return ($credit-$debit);
+      }
+
+
 
 
 }

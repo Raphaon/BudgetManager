@@ -130,6 +130,7 @@ class myFonction
 
       function getEmployee($mat)
       {
+        
           return DB::table("employe")->select('*')->where('isDelete', 0)->where('matriculeEmp', $mat)->first();
       }
 
@@ -137,6 +138,26 @@ class myFonction
       {
         return Employe::where('isDelete', 0)
         ->get();
+      }
+
+
+ // Obtenir le solde d'un compte 
+
+      public function getAccountBalance(Compte $compte1)
+      {
+        $debit = DB::table('ligne_mvt_compte')
+        ->where('ligne_mvt_compte.isDelete', 0)
+        ->leftJoin('compte', 'compte.numCompte', '=', 'ligne_mvt_compte.reffCompte')
+        ->where('numCompte', $compte1->numCompte)
+        ->where('sens', 'Debit')
+        ->SUM('montant_mvt');
+        $credit = $debit = DB::table('ligne_mvt_compte')
+        ->where('ligne_mvt_compte.isDelete', 0)
+        ->leftJoin('compte', 'compte.numCompte', '=', 'ligne_mvt_compte.reffCompte')
+        ->where('numCompte', $compte1->numCompte)
+        ->where('sens', 'credit')
+        ->SUM('montant_mvt');
+        return ($credit-$credit);
       }
 
 }

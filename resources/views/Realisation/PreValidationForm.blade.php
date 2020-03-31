@@ -75,14 +75,14 @@ td
 
 @php
                 $agence =$myFonction->getBranch(session("BranchCode"));
-            @endphp
+@endphp
 </head>
 <div class="body">
         <table border="10" >
                 <tr>
                     <td colspan="2">
                         <div class="header">
-                            <h1 class="titre">People Finance / {{ $agence->nomAg }}</h1>
+                            <h1 class="titre">{{ $agence->nomAg }}</h1>
                         </div>
                     </td>
                 </tr>
@@ -119,13 +119,22 @@ td
                 </tr>
                  <tr>
                     <td>Effectué par : </td>
-                    <td><b class="signature">{{ $autorise->nomEmp}} {{  $autorise->prenom }}</b></td>
+                    @if($autorise != null)
+                        <td><b class="signature">{{ $autorise->nomEmp}} {{  $autorise->prenom }}</b></td>
+                    @else
+                         <td><b class="signature">Empty</b></td>
+                    @endif
                 </tr>
                 <tr>
                         <td>Autorisé par : </td>
+                        @if($autorise != null)
                         <td><b class="signature">{{ $done->nomEmp}} {{  $done->prenom }}</b></td>
+                    @else
+                         <td><b class="signature">Empty</b></td>
+                    @endif
+                            
                 </tr>
-               
+
                 <tr>
                     <td>Observation :</td>
                     <td><b class="signature">{{ $observation }}</b></td>
@@ -172,10 +181,3 @@ td
 </div>
 </div>
 </html>
-
-
-
-
-
-
-

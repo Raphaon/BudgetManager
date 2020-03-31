@@ -115,6 +115,26 @@ Route::post('/agence', [
     'uses' => 'AgenceController@index'
 ]);
 
+
+Route::get('/employe', [
+    'as' => 'employes',
+    'uses' => 'EmployeController@index'
+]);
+
+
+
+
+Route::get('/suiviecompte', [
+    'as' => 'suiviCompte',
+    'uses' => 'CompteController@index'
+]);
+
+
+
+
+
+
+
 Route::get('/prevision', [
     'as' => 'prevision',
     'uses' =>'PrevisionController@index'
@@ -271,4 +291,3 @@ Route::post('/realisation/search', 'RealisationController@find');
 Route::post('/postbudgetaire/new', 'PostBudgetaireController@store');
 Route::post('/prevision/new', 'PrevisionController@store');
 Route::post('/realisation/store', 'RealisationController@store');
-

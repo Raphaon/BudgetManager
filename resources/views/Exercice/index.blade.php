@@ -8,7 +8,7 @@
 <div class="content mt-3">
     <div class="animated fadeIn">
         @if($exercice!=null)
-        <h5 class="heading-title mb-1 text-secondary">Exercice Budgetaire : {{ $exercice->AnneeExecice }}</h5>
+        <h5 class="heading-title mb-1 text-secondary">Exercice Budgetaire : {{ $exercice->AnneeExercice }}</h5>
         <br>
         <div class="row">
             <div class="col">
@@ -50,8 +50,3 @@
         <h2>Il n y auccun Exerice budgetaire en cours</h2>
 @endif
 @endsection
-
-
-
-
-

@@ -17,9 +17,12 @@ class ExerciceController extends Controller
         {
             return  redirect()->to("login");
         }
+
         $exercice = Exercice::where('statusExo','=', "Encours")
-        ->where("isClose",0)
+        ->where('codeExercice',session('codeExo'))
+        ->where('isClose', 0)
         ->first();
+      //  dd($exercice);
         return view("Exercice/index", compact('exercice') );
     }
 

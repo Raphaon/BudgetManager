@@ -61,6 +61,20 @@
 
                     </ul>
             </li>
+             <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gestion Compte<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{{ route('suiviCompte') }}">Comptes</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{{ route('ConsoEncours') }}">Historique</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{{ route('postEnDepassement') }}">Virement</a></li>
+                      <li role="separator" class="divider"></li>
+                       <li><a href="{{ route('postEnDepassement') }}">Approv</a></li>
+
+
+                    </ul>
+            </li>
           <li><a href="#">Link</a></li>
         </ul>
         <form class="navbar-form navbar-left">
@@ -79,6 +93,8 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('postbudgetaire') }}">Post budgetaire</a></li>
                         <li role="separator" class="divider"></li>
+                        <li><a href="{{ route('employes') }}">Employé</a></li>
+                        <li role="separator" class="divider"></li>
                         <li><a href="{{ route('categorie') }}">Categorie</a></li>
                     </ul>
                 </li>
@@ -88,6 +104,9 @@
               <li><a href="#">Profils</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="{{ route('users') }}">Users</a></li>
+
+
+
               <li role="separator" class="divider"></li>
               <li> <a href="{{ route('logout') }}"> <i class="fa fa-power-off"> </i> Deconnection</a></li>
             </ul>
