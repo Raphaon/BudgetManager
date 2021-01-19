@@ -8,4 +8,7 @@ class Exercice extends Model
 {
     protected $table ='exercice';
     public $timestamps = 0;
+    public function getRealisation(){}
+    
+
 }

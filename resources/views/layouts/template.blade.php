@@ -75,14 +75,30 @@
 
                     </ul>
             </li>
+              <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Stocks Labo <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{{ route('suiviCompte') }}">Produits/Reactifs</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{{ route('ConsoEncours') }}">Bon de commande</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{{ route('postEnDepassement') }}">Fournisseurs</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{{ route('postEnDepassement') }}">Recap des commandes</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{{ route('postEnDepassement') }}">Synthese Conso Mens</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{{ route('postEnDepassement') }}">Cumul depenses</a></li>
+                    </ul>
+            </li>
           <li><a href="#">Link</a></li>
         </ul>
-        <form class="navbar-form navbar-left">
+        <!--form class="navbar-form navbar-left">
           <div class="form-group">
             <input type="text" class="form-control" placeholder="Search">
           </div>
           <button type="submit" class="btn btn-default">Submit</button>
-        </form>
+        </form-->
         <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Parametre<span class="caret"></span></a>

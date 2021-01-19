@@ -8,4 +8,6 @@ class Employe extends Model
 {
   protected $table ='employe';
   public $timestamps = 0;
+
+  
 }

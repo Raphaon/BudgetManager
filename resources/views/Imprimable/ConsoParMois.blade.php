@@ -4,7 +4,7 @@
 @php
     $agence =$myFonction->getBranch(session("BranchCode"));
 @endphp
-<h1 style="text-align: center;">People Finance  /  {{ $agence->nomAg }}</h1>
+<h1 style="text-align: center;">CMN  /  {{ $agence->nomAg }}</h1>
 @php
 $tab_mois = array('Janvier', 'Fevrier', 'Mars','Avril','Mai','juin','juillet','Août','Septembre','Octobre','Novembre','Decembre')
 @endphp

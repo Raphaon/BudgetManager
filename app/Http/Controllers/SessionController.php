@@ -17,7 +17,9 @@ class SessionController extends Controller
     {
         $erreurs = request("erreurs");
         $agence = Agence::where('isDelete','=', 0)->get();
-        return view("session.index", compact('agence','erreurs'));
+        $agences = Agence::where('isDelete','=', 0)->get();
+        //dd($agences);
+        return view("session.index", compact('erreurs', 'agences', 'agence'));
     }
 
      public function loginCheck(Request $request)
@@ -26,6 +28,8 @@ class SessionController extends Controller
         $pass = request("passe");
         $pass = sha1($pass);
         $agence =request("agence");
+
+        
         $userinfo = Users::where('isDelete' ,'=', 0)
         ->join('groupe', 'groupe.id_groupe','=','users.groupe_id')
         ->where('login', $login)

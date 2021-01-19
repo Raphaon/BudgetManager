@@ -1,4 +1,4 @@
-@inject('myFonction', 'App\myFonction')
+    @inject('myFonction', 'App\myFonction')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +14,7 @@
   @php
                   $agence =$myFonction->getBranch(session("BranchCode"));
   @endphp
-    <h1> {{$agence}} </h1>
+    <h1> {{ "CMN // ".$agence->nomAg }} </h1>
 </header>
 <hr>
     <div class="container" >
