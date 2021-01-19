@@ -135,6 +135,7 @@ Route::get('/suiviecompte', [
 
 
 
+
 Route::get('/prevision', [
     'as' => 'prevision',
     'uses' =>'PrevisionController@index'
@@ -291,3 +292,16 @@ Route::post('/realisation/search', 'RealisationController@find');
 Route::post('/postbudgetaire/new', 'PostBudgetaireController@store');
 Route::post('/prevision/new', 'PrevisionController@store');
 Route::post('/realisation/store', 'RealisationController@store');
+
+
+
+Route::get('/new/Account', [
+    'as' => 'newAccount',
+    'uses' => 'CompteController@create'
+]);
+
+
+Route::post('/new/Account', [
+    'as' => 'storeAccount',
+    'uses' => 'CompteController@store'
+]);

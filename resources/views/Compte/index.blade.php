@@ -6,7 +6,7 @@
 
 @section('content_block')
         <div class="text-center">
-            <a href="{{ route('nouvellePrevision') }}" class="create-modal btn btn-success btn-sm">
+            <a href="{{ route('newAccount') }}" class="create-modal btn btn-success btn-sm">
                     <i class="glyphicon glyphicon-plus"></i> Add
             </a>
             <a href="{{ route('exporterPrevision') }}" class="btn btn-default" > <i class="glyphicon glyphicon-download"></i>  Export</a>
