@@ -70,7 +70,7 @@
                                             <a class="show-modal btn btn-success" href="prevsion/view/{{ $value->idPrevision }}">
                                                 <i class="glyphicon glyphicon-eye-open"></i>
                                             </a>
-                                            <a class="edit-modal btn btn-warning" href="prevision/edit/{{ $value->idPrevision }}">
+                                            <a class="edit-modal btn btn-warning" href="prevision/{{ $value->idPrevision }}">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                             </a>
                                             <a class="delete-modal delete-modal-Ag btn btn-danger"  href="prevision/delete/{{ $value->idPrevision }}">

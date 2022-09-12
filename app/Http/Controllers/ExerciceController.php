@@ -22,7 +22,7 @@ class ExerciceController extends Controller
         ->where('codeExercice',session('codeExo'))
         ->where('isClose', 0)
         ->first();
-      //  dd($exercice);
+      dd($exercice);
         return view("Exercice/index", compact('exercice') );
     }
 

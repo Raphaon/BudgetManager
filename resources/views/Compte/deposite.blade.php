@@ -8,7 +8,7 @@
 <div class="container">
     <div class="panel panel-content col-sm-11" >
         <div class="panel panel-heading">
-            <div class="panel panel-title">Virement Compte à Compte </div>
+            <div class="panel panel-title">Approvisionement d'un Compte </div>
         </div>
 
         <form role="form" class="form-horizontal" method="post" action="/prevision/new">
@@ -24,19 +24,7 @@
             </div>
 
 
-                <div class="form-group">
-                    <label class="control-label col-sm-3">Debiter le :</label>
-                    <div class="col-sm-5">
 
-                       <select class="form-control" name="accountDebit">
-                           <option value="">Compte à debiter</option>
-                           @foreach ($comptes as $values )
-                            <option value="{{ $values->numCompte }}">{{ $values->accountName }}</option>
-                           @endforeach
-                       </select>
-                        <p class="erros text-center alert alert-danger hidden"></p>
-                    </div>
-                </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-3">Credit le  :</label>

@@ -12,22 +12,7 @@
 </head>
 <body>
 
-    <div class="container">
-        <div class="blockImage">
-            <img src="images/people-coffee-tea-meeting.jpg" alt="Budget Images">
-        </div>
 
-        <div class="blockLogin">
-            <form action="action" method="post">
-                <label for="login">Login : </label>
-                <input type="text" name="login" id="login" class="form-control">
-                <label for="password">Password : </label>
-                <input type="password" name="password" id="password" class="form-control">
-                <label for="ranch"></label>
-            </form>
-        </div>
-        
-    </div>
 
     <style>
         .blockImage
@@ -49,7 +34,7 @@
             padding:0px;
         }
 
-        
+
         .blockLogin img
         {
             margin:0px;
@@ -80,7 +65,7 @@
             width:100%;
             border:groove;
             display:inline-block;
-        
+
         }
 
     </style>

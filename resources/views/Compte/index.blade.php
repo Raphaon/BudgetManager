@@ -26,7 +26,7 @@
                                     <th> Solde</th>
                                     <th>Type Compte </th>
                                     <th>Description</th>
-                                    
+
                                     <th>
                                        #
                                     </th>
@@ -40,7 +40,7 @@
                                     <th width="100"> Solde </th>
                                     <th>Type Compte </th>
                                     <th>Description</th>
-                                   
+
 
                                     <th>
                                        #
@@ -53,15 +53,15 @@
                                 @foreach ($comptes as $key=>$value )
                                     <tr>
                                         @php
-    
+
                                             $solde = $myFonction->getAccountBalance($value->numCompte);
                                         @endphp
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $value->numCompte }}</td>
-                                        <td>{{ $value->libelle}}</td>
+                                        <td>{{ $value->accountName}}</td>
                                         <td>{{ number_format($solde,2, ',', ' ') }}</td>
                                         <td>{{ $value->typeCompte}}</td>
-                                       
+
                                         <td>{{ $value->description }}</td>
 
                                         <td>
@@ -82,8 +82,8 @@
                             </tbody>
                         </table>
 
-                      
+
             </div>
         </div>
-  
+
 @endsection

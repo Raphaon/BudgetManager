@@ -46,7 +46,7 @@
                                        <select class="form-control" name="post" id="rubrique_rea">
                                             <option value="">Selectionner un Post</option>
                                            @foreach ($post as $values )
-                                            <option value="{{ $values->numCompte }}">{{ $values->intitulePost }}</option>
+                                            <option value="{{ $values->numCompte }}">{{ strtoupper($values->intitulePost) }}</option>
                                            @endforeach
 
                                        </select>
@@ -86,7 +86,7 @@
                                        <select class="form-control" name="compteConcern"  required>
                                            <option value="" selected >Compte à mouvementer </option>
                                            @foreach ($comptes as $values )
-                                            <option value="{{ $values->numCompte }}">{{ $values->libelle }}</option>
+                                            <option value="{{ $values->numCompte }}">{{  strtoupper($values->accountName)}}</option>
                                            @endforeach
 
                                        </select>
@@ -111,7 +111,7 @@
                                        <select class="form-control" name="employe_effectuer" id="employe_effectuer_rea"  required>
                                            <option value="" selected >Selectionner l utilisateur </option>
                                            @foreach ($employe as $values )
-                                            <option value="{{ $values->matriculeEmp }}">{{ $values->nomEmp." ".$values->prenom }}</option>
+                                            <option value="{{ $values->matriculeEmp }}">{{ strtoupper($values->nomEmp." ".$values->prenom) }}</option>
                                            @endforeach
 
                                        </select>
@@ -125,7 +125,7 @@
                                        <select class="form-control" name="employe_autorise" required id="employe_autorise_rea">
                                            <option value="" selected>Selectionner un employes</option>
                                            @foreach ($employe as $values )
-                                            <option value="{{ $values->matriculeEmp }}">{{ $values->nomEmp." ".$values->prenom }}</option>
+                                            <option value="{{ $values->matriculeEmp }}">{{ strtoupper($values->nomEmp." ".$values->prenom) }}</option>
                                            @endforeach
 
                                        </select>
@@ -137,10 +137,10 @@
                                     <div class="col-sm-8">
                                        <select name="exercice" id="exercice_rea" class="form-control" required>
                                            @foreach ( $exo as $values )
-                                           
-                                           
+
+
                                                  <option value="{{ $values->codeExercice }}">{{ $values->AnneeExercice }}</option>
-                                    
+
                                            @endforeach
                                        </select>
                                     </div>

@@ -34,7 +34,11 @@
             <ul class="dropdown-menu">
               <li><a href="{{ route('sortiefonds') }}">Sortie de fonds</a></li>
               <li role="separator" class="divider"></li>
+              <li><a href="{{ route('sortiefonds') }}">Recettes</a></li>
+              <li role="separator" class="divider"></li>
               <li><a href="{{ route('realisation') }}">List</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="{{ route('realisation') }}">Importer </a></li>
               <li role="separator" class="divider"></li>
               <li> <a href="{{ route('rechercheRealisation') }}">Rechercher</a></li>
             </ul>
@@ -66,9 +70,9 @@
                     <ul class="dropdown-menu">
                       <li><a href="{{ route('suiviCompte') }}">Comptes</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="{{ route('ConsoEncours') }}">Historique</a></li>
+                      <li><a href="{{ route('historique') }}">Historique</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="{{ route('postEnDepassement') }}">Virement</a></li>
+                      <li><a href="{{ route('transfer') }}">Virement</a></li>
                       <li role="separator" class="divider"></li>
                        <li><a href="{{ route('postEnDepassement') }}">Approv</a></li>
 

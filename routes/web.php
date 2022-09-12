@@ -13,7 +13,6 @@
 
 //Route::get('/', 'StatistiquesController@index');
 
-
 Route::get('/', [
     'as'   => 'home',
     'uses' => 'StatistiquesController@index'
@@ -138,102 +137,123 @@ Route::get('/suiviecompte', [
 
 Route::get('/prevision', [
     'as' => 'prevision',
-    'uses' =>'PrevisionController@index'
+    'uses' => 'PrevisionController@index'
 ]);
 
 Route::post('/prevision', [
     'as' => 'prevision',
-    'uses' =>'PrevisionController@index'
+    'uses' => 'PrevisionController@index'
 ]);
+
+
+Route::get('/realisation/delete/{slug}', [
+    'as' => 'deletePrevision',
+    'uses' => 'RealisationController@delete'
+]);
+
+Route::get('/prevision/{idprev}', [
+    'as' => 'previsonUpdate',
+    'uses' => 'PrevisionController@update'
+]);
+
+
+Route::post('/prevision/saveUpdate', [
+    'as' => 'saveUpdate',
+    'uses' => 'PrevisionController@saveUpdate'
+]);
+
+
+
+
 
 Route::get('/realisation/validation', [
     'as' => 'formValidation',
-    'uses' =>'RealisationController@newValisationPDF'
+    'uses' => 'RealisationController@newValisationPDF'
 ]);
 
 Route::get('/prevision/new', [
     'as' => 'nouvellePrevision',
-    'uses' =>'PrevisionController@create'
+    'uses' => 'PrevisionController@create'
 ]);
 
 Route::get('/postbudgetaire', [
     'as' => 'postbudgetaire',
-    'uses' =>'PostBudgetaireController@Index'
+    'uses' => 'PostBudgetaireController@Index'
 ]);
 
 Route::get('/categorie', [
     'as' => 'categorie',
-    'uses' =>'CategorieController@index'
+    'uses' => 'CategorieController@index'
 ]);
 
 Route::post('/prevision', [
     'as' => 'prevision',
-    'uses' =>'PrevisionController@index'
+    'uses' => 'PrevisionController@index'
 ]);
 
 Route::get('/exercice', [
     'as' => 'exercice',
-    'uses' =>'ExerciceController@index'
+    'uses' => 'ExerciceController@index'
 ]);
 
 Route::get('/realisation/printAll', [
     'as' => 'listReaAll',
-    'uses' =>'RealisationController@listeImprimable'
+    'uses' => 'RealisationController@listeImprimable'
 ]);
 
 Route::get('/realisation/preValidation', [
     'as' => 'Prevalidation',
-    'uses' =>'RealisationController@PrintPreview'
+    'uses' => 'RealisationController@PrintPreview'
 ]);
 
 Route::post('/realisation/preValidation', [
     'as' => 'Prevalidation',
-    'uses' =>'RealisationController@printPreValidation'
+    'uses' => 'RealisationController@printPreValidation'
 ]);
 
 Route::post('/realisation/new', [
     'as' => 'sortieTraitment',
-    'uses' =>'RealisationController@insert'
+    'uses' => 'RealisationController@insert'
 ]);
 
-Route::get('/realisation/search',[
+Route::get('/realisation/search', [
     'as' => 'rechercheRealisation',
     'uses' => 'RealisationController@search'
 ]);
 
-Route::get('/realisation/import',[
+Route::get('/realisation/import', [
     'as' => 'importrealisation',
     'uses' => 'RealisationController@import'
 ]);
 
-Route::post('/realisation/import',[
+Route::post('/realisation/import', [
     'as' => 'importrealisation',
     'uses' => 'RealisationController@importTraitement'
 ]);
 
-Route::post('/realisation/update',[
+Route::post('/realisation/update', [
     'as' => 'updateRealisation',
     'uses' => 'RealisationController@update'
 ]);
 
-Route::get('/prevision/export',[
+Route::get('/prevision/export', [
     'as' => 'exporterPrevision',
     'uses' => 'PrevisionController@export'
 ]);
 
 
-Route::get('/prevision/import',[
+Route::get('/prevision/import', [
     'as' => 'importerPrevision',
     'uses' => 'PrevisionController@import'
 ]);
 
 
-Route::get('/realisation/searchView',[
+Route::get('/realisation/searchView', [
     'as' => 'SearchPrintPdf',
     'uses' => 'RealisationController@printSearchpdf'
 ]);
 
-Route::post('/prevision/import',[
+Route::post('/prevision/import', [
     'as' => 'import_previ',
     'uses' => 'PrevisionController@importTraitement'
 ]);
@@ -256,7 +276,7 @@ Route::get('/postbudgetaire/import', [
     'uses' => 'PostBudgetaireController@import'
 ]);
 
-Route::get('/realisation/delete/{slug}',[
+Route::get('/realisation/delete/{slug}', [
     'as' => 'deletePrevision',
     'uses' => 'RealisationController@delete'
 ]);
@@ -290,6 +310,7 @@ Route::post('/updateBranch', 'AgenceController@update');
 Route::post('/addBranch', 'AgenceController@store');
 Route::post('/realisation/search', 'RealisationController@find');
 Route::post('/postbudgetaire/new', 'PostBudgetaireController@store');
+
 Route::post('/prevision/new', 'PrevisionController@store');
 Route::post('/realisation/store', 'RealisationController@store');
 
@@ -304,4 +325,24 @@ Route::get('/new/Account', [
 Route::post('/new/Account', [
     'as' => 'storeAccount',
     'uses' => 'CompteController@store'
+]);
+
+
+Route::get('/account/history', [
+    'as' => 'historique',
+    'uses' => 'CompteController@history'
+]);
+
+
+
+Route::get('/account/transfer', [
+    'as' => 'transfer',
+    'uses' => 'CompteController@transfer'
+]);
+
+
+
+Route::get('/account/deposite', [
+    'as' => 'depositeToAccount',
+    'uses' => 'CompteController@deposite'
 ]);

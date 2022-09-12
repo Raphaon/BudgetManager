@@ -12,23 +12,23 @@ use App\Models\Compte;
 use App\Models\Ligne_mvt_Compte;
 use DB;
 use PDF;
+
 class RealisationController extends Controller
 {
     public function index()
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
-        $realisation= DB::table('realisation')
-        ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
-        ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
-        ->where('prevision.isDelete', 0)
-        ->where('realisation.isDelete', 0)
-        ->where('prevision.exercicePrevi', session('codeExo'))
-        ->orderBy('dateRea',"DESC")
-        ->get();
+        $realisation = DB::table('realisation')
+            ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
+            ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
+            ->where('prevision.isDelete', 0)
+            ->where('realisation.isDelete', 0)
+            ->where('prevision.exercicePrevi', session('codeExo'))
+            ->orderBy('dateRea', "DESC")
+            ->get();
         return view("realisation.index", compact("realisation"));
     }
 
@@ -36,48 +36,48 @@ class RealisationController extends Controller
     {
         $fonction = new myFonction();
 
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
 
-        $realisation= DB::table('realisation')
-        ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
-        ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
-        ->where('prevision.isDelete', 0)
-        ->get();
+        $realisation = DB::table('realisation')
+            ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
+            ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
+            ->where('prevision.isDelete', 0)
+            ->get();
 
         $post =  DB::table("postbudgetaire")->select('*')
-                ->whereIn('numCompte',function($query) {
+            ->whereIn('numCompte', function ($query) {
                 $query->select('codePostbudgetaire')
-                ->from('prevision')->where('prevision.exercicePrevi', session("codeExo"));
-         })
-         ->join("prevision", "prevision.codePostBudgetaire", '=', "postbudgetaire.numCompte")
-         ->join("exercice", "exercice.codeExercice", '=', "prevision.exercicePrevi")
-         ->where("exercice.codeExercice", session('codeExo'))
-         ->where('postbudgetaire.isDelete', 0)
-         ->orderBy("intitulePost", "ASC")
-         ->get();
+                    ->from('prevision')->where('prevision.exercicePrevi', session("codeExo"));
+            })
+            ->join("prevision", "prevision.codePostBudgetaire", '=', "postbudgetaire.numCompte")
+            ->join("exercice", "exercice.codeExercice", '=', "prevision.exercicePrevi")
+            ->where("exercice.codeExercice", session('codeExo'))
+            ->where('postbudgetaire.isDelete', 0)
+            ->where('postBudgetaire.sensPost', 'Charge')
+            ->orderBy("intitulePost", "ASC")
+            ->get();
 
         $exo = exercice::where("statusExo", "Encours")
             ->where("agence", session('BranchCode'))
-             ->Orwhere("statusExo", "Encloture")
-            ->where("codeExercice",session('codeExo'))
+            ->Orwhere("statusExo", "Encloture")
+            ->where("codeExercice", session('codeExo'))
             ->get();
 
         $employe = Employe::where('isDelete', 0)
-        ->orderBy('nomEmp')
-        ->get();
+            ->orderBy('nomEmp')
+            ->get();
 
-        $orders = DB::select ("SELECT codePrevision, SUM(montantRea) AS total FROM realisation GROUP BY (codePrevision)");
-/*
+        $orders = DB::select("SELECT codePrevision, SUM(montantRea) AS total FROM realisation GROUP BY (codePrevision)");
+        /*
                 $orders = DB::table('orders')
                 ->select('department', DB::raw('SUM(price) as total_sales'))
                 ->groupBy('department')
                 ->havingRaw('SUM(price) > ?', [2500])
                 ->get();
                 */
-                $comptes = Compte::where('isDelete',0 )->get();
+        $comptes = Compte::where('isDelete', 0)->get();
 
         return view("realisation.new", compact("post", "employe", 'exo', 'comptes'));
     }
@@ -86,18 +86,17 @@ class RealisationController extends Controller
     public function search()
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
 
-        $realisation= DB::table('realisation')
-        ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
-        ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
-        ->where('prevision.isDelete', 0)
-        ->where('realisation.isDelete', 0)
-        ->where('prevision.exercicePrevi', session('codeExo'))
-        ->get();
+        $realisation = DB::table('realisation')
+            ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
+            ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
+            ->where('prevision.isDelete', 0)
+            ->where('realisation.isDelete', 0)
+            ->where('prevision.exercicePrevi', session('codeExo'))
+            ->get();
         session()->flash('printsearchList', $realisation);
         return view("realisation.search", compact("realisation"));
     }
@@ -107,93 +106,86 @@ class RealisationController extends Controller
     public function find(Request $request)
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
         $post = request('postbudgetaire');
-        $debut =request('periodDebut');
+        $debut = request('periodDebut');
         $fin = request('periodFin');
-        if($post == '*')
-        {
-            $realisation= DB::table('realisation')
-            ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
-            ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
-            ->where('prevision.isDelete', 0)
-            ->where('realisation.isDelete', 0)
-            ->where('prevision.exercicePrevi', session('codeExo'))
-            ->whereBetween('dateRea', [$debut, $fin])
-            ->get();
+        if ($post == '*') {
+            $realisation = DB::table('realisation')
+                ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
+                ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
+                ->where('prevision.isDelete', 0)
+                ->where('realisation.isDelete', 0)
+                ->where('prevision.exercicePrevi', session('codeExo'))
+                ->whereBetween('dateRea', [$debut, $fin])
+                ->get();
             session()->put('printsearchListPost', "Tous");
-
-        }elseif($post!='*' and !empty($post))
-        {
-            $realisation= DB::table('realisation')
-            ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
-            ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
-            ->where('prevision.isDelete', 0)
-            ->where('realisation.isDelete', 0)
-            ->where('prevision.exercicePrevi', session('codeExo'))
-            ->where('postbudgetaire.numCompte', $post)
-            ->whereBetween('dateRea', [$debut, $fin])
-            ->get();
+        } elseif ($post != '*' and !empty($post)) {
+            $realisation = DB::table('realisation')
+                ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
+                ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
+                ->where('prevision.isDelete', 0)
+                ->where('realisation.isDelete', 0)
+                ->where('prevision.exercicePrevi', session('codeExo'))
+                ->where('postbudgetaire.numCompte', $post)
+                ->whereBetween('dateRea', [$debut, $fin])
+                ->get();
             session()->put('printsearchListPost', $post);
         }
         session()->put('printsearchList', $realisation);
         session()->put('printsearchListDateFin', $fin);
         session()->put('printsearchListDateDebut', $debut);
-        return view("realisation.search", compact("realisation", 'debut',"fin"));
+        return view("realisation.search", compact("realisation", 'debut', "fin"));
     }
     public function showDetail(Request $request)
     {
         $code =  request("slug");
-        $realisation= DB::table('realisation')
-        ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
-        ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
-        ->where('prevision.isDelete', 0)
-        ->where('realisation.isDelete', 0)
-        ->where('prevision.exercicePrevi', session('codeExo'))
-        ->where('refferenceRea', $code)
-        ->get();
-        
-        return view("realisation.show", compact("realisation"));
+        $realisation = DB::table('realisation')
+            ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
+            ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
+            ->where('prevision.isDelete', 0)
+            ->where('realisation.isDelete', 0)
+            ->where('prevision.exercicePrevi', session('codeExo'))
+            ->where('refferenceRea', $code)
+            ->get();
 
+        return view("realisation.show", compact("realisation"));
     }
     public function delete(Request $request)
     {
         $code =  request("slug");
-        $realisation= DB::table('realisation')
-        ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
-        ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
-        ->where('prevision.isDelete', 0)
-        ->where('realisation.isDelete', 0)
-        ->where('prevision.exercicePrevi', session('codeExo'))
-        ->where('refferenceRea', $code)
-        ->get();
-       
-        return view("realisation.show", compact("realisation"));
+        $realisation = DB::table('realisation')
+            ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
+            ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
+            ->where('prevision.isDelete', 0)
+            ->where('realisation.isDelete', 0)
+            ->where('prevision.exercicePrevi', session('codeExo'))
+            ->where('refferenceRea', $code)
+            ->get();
 
+        return view("realisation.show", compact("realisation"));
     }
 
     public function store(Request $request)
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
 
         $myFonction = new myFonction();
-        $codePost =request('codePost');
+        $codePost = request('codePost');
         $post = $myFonction->getPost($codePost);
         $reaannuelPost = $myFonction->ReaAnnuelPost($codePost, session("codeExo"));
         $PreviannuelPost =  $myFonction->PreviAnnuelPost($codePost, session("codeExo"));
-        $previmens = ($PreviannuelPost /12);
-        $dateDebutMois  = date('Y').'-'.date('m').'-01';
+        $previmens = ($PreviannuelPost / 12);
+        $dateDebutMois  = date('Y') . '-' . date('m') . '-01';
         $dateFinMois = date('Y-m-t', strtotime($dateDebutMois));
         $reaMenPost = $myFonction->MontantReaPostSurPeriodDe(session('codeExo'), $dateDebutMois, $dateFinMois, $codePost);
-        $tauxMensPost  = ($reaMenPost/$previmens) * 100;
-        $tauxAnnuel = ($reaannuelPost/$PreviannuelPost)* 100;
+        $tauxMensPost  = ($reaMenPost / $previmens) * 100;
+        $tauxAnnuel = ($reaannuelPost / $PreviannuelPost) * 100;
         $ecartAnnuel  = $PreviannuelPost - $reaannuelPost;
         $ecartMens = $previmens - $reaMenPost;
         $tA = $tauxAnnuel;
@@ -201,61 +193,57 @@ class RealisationController extends Controller
         $Em = $ecartMens;
 
         $reaMensuelleHidde = $reaMenPost;
-        $reaannuelPost = number_format($reaannuelPost,2, ',', ' ');
-        $PreviannuelPost = number_format($PreviannuelPost,2, ',', ' ');
-        $tauxAnnuel = number_format($tauxAnnuel,2, ',', ' ');
-        $previmens = number_format($previmens,2, ',', ' ');
-        $reaMenPost = number_format($reaMenPost,2, ',', ' ');
-        $tauxMensPost = number_format($tauxMensPost,2, ',', ' ');
-        $ecartAnnuel = number_format($ecartAnnuel,2, ',', ' ');
-        $ecartMens =  number_format($ecartMens,2, ',', ' ');
-        return array($post, $reaannuelPost, $PreviannuelPost,$tauxAnnuel, $previmens,$reaMenPost,$tauxMensPost,$ecartAnnuel,$ecartMens,$tA,$tM,$Em,$reaMensuelleHidde);
+        $reaannuelPost = number_format($reaannuelPost, 2, ',', ' ');
+        $PreviannuelPost = number_format($PreviannuelPost, 2, ',', ' ');
+        $tauxAnnuel = number_format($tauxAnnuel, 2, ',', ' ');
+        $previmens = number_format($previmens, 2, ',', ' ');
+        $reaMenPost = number_format($reaMenPost, 2, ',', ' ');
+        $tauxMensPost = number_format($tauxMensPost, 2, ',', ' ');
+        $ecartAnnuel = number_format($ecartAnnuel, 2, ',', ' ');
+        $ecartMens =  number_format($ecartMens, 2, ',', ' ');
+        return array($post, $reaannuelPost, $PreviannuelPost, $tauxAnnuel, $previmens, $reaMenPost, $tauxMensPost, $ecartAnnuel, $ecartMens, $tA, $tM, $Em, $reaMensuelleHidde);
     }
 
     //generation du pdf de validation
     public function newValisationPDF()
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
-      $pdf = PDF::loadView('Realisation/pdfPreValidation');
-      //return view('Realisation/pdfPreValidation');
-      return $pdf->download('VourcherValidation.pdf');
+        $pdf = PDF::loadView('Realisation/pdfPreValidation');
+        //return view('Realisation/pdfPreValidation');
+        return $pdf->download('VourcherValidation.pdf');
     }
 
     public function listeImprimable()
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
-        $realisation= DB::table('realisation')
-        ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
-        ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
-        ->where('prevision.isDelete', 0)
-        ->where('realisation.isDelete', 0)
-        ->where('prevision.exercicePrevi', session('codeExo'))
-        ->orderBy('dateRea',"DESC")
-        ->get();
-        $pdf = PDF::loadView("realisation.pintAllPDF", compact("realisation"))->setPaper('A4', 'landscape',"10","10","10");
-      //return view('Realisation/pdfPreValidation');
+        $realisation = DB::table('realisation')
+            ->leftJoin('prevision', 'realisation.codePrevision', '=', 'prevision.idPrevision')
+            ->join("postbudgetaire", "postbudgetaire.numCompte", '=', "prevision.codePostBudgetaire")
+            ->where('prevision.isDelete', 0)
+            ->where('realisation.isDelete', 0)
+            ->where('prevision.exercicePrevi', session('codeExo'))
+            ->orderBy('dateRea', "DESC")
+            ->get();
+        $pdf = PDF::loadView("realisation.pintAllPDF", compact("realisation"))->setPaper('A4', 'landscape', "10", "10", "10");
+        //return view('Realisation/pdfPreValidation');
         return $pdf->stream('List_des_realisation.pdf');
-
     }
 
     public function printPreValidation(Request $request)
     {
-    
-    
+
+
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
-        $codePost =request("codePost");
+        $codePost = request("codePost");
         $montantSortie = request("montantSortie");
         $autoriseBy = request('autoriseBy');
         $doneBy = request('doneBy');
@@ -271,11 +259,10 @@ class RealisationController extends Controller
     public function PrintPreview()
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
-       
+
         $montantSortie = session("montant");
         $codePost = session('code');
         $autoriseBy = session("autoriseBy");
@@ -283,15 +270,14 @@ class RealisationController extends Controller
         $doneBy = session("doneBy");
         //dd($doneBy);
         $observation = session("observation");
-        if(empty($montantSortie) or empty($codePost) or empty($doneBy) or empty($autoriseBy))
-        {
+        if (empty($montantSortie) or empty($codePost) or empty($doneBy) or empty($autoriseBy)) {
             $myErrors = "Veuillez Renseigner tous les champs obligatoires";
             session()->flash('errorsformPrint', $myErrors);
             return redirect()->to('realisation/new');
         }
-        $nbre = Realisation::where('isDelete',0)->count();
-        $reff = "MVT".date("d").date('m').date('y').date('H').date('i').date('s').date('v').(++$nbre);
-        $pdf = PDF::loadView("realisation.PreValidationForm", compact('codePost','observation','doneBy', 'autoriseBy', "montantSortie",'reff'))->setPaper('A4', 'landscape');
+        $nbre = Realisation::where('isDelete', 0)->count();
+        $reff = "MVT" . date("d") . date('m') . date('y') . date('H') . date('i') . date('s') . date('v') . (++$nbre);
+        $pdf = PDF::loadView("realisation.PreValidationForm", compact('codePost', 'observation', 'doneBy', 'autoriseBy', "montantSortie", 'reff'))->setPaper('A4', 'landscape');
         //return view('Realisation/pdfPreValidation');
         return $pdf->stream('Prevalidationforme.pdf');
     }
@@ -302,40 +288,34 @@ class RealisationController extends Controller
         $action = htmlspecialchars(request('realisationUpgradeAction'));
         $reffenceMvt = htmlspecialchars(request("RefferenceSortie"));
 
-       if($action=="delete")
-       {
-            $mvt = Realisation::where("refferenceRea", $reffenceMvt)->where('isDelete',0)->update(['isDelete'=> 1]);
+        if ($action == "delete") {
+            $mvt = Realisation::where("refferenceRea", $reffenceMvt)->where('isDelete', 0)->update(['isDelete' => 1]);
             return redirect()->to('realisation');
-
-       }elseif($action=="update")
-       {
-            $mvt = Realisation::where("refferenceRea", $reffenceMvt)->where('isDelete',0)
-            ->update([
-                'isDelete'=> 0,
-                "montantRea" => htmlspecialchars(request("montantSortie")),
-                "dateRea" => htmlspecialchars(request("dateRea")),
-                "observationRea" => htmlspecialchars(request("observation")),
-                "codePrevision" => htmlspecialchars(request("codePrevisionPost")),
-                "autorise_par" => htmlspecialchars(request("effectuer_par")),
-                "effectuer_par" => htmlspecialchars(request("autorise_par"))
-            ]);
+        } elseif ($action == "update") {
+            $mvt = Realisation::where("refferenceRea", $reffenceMvt)->where('isDelete', 0)
+                ->update([
+                    'isDelete' => 0,
+                    "montantRea" => htmlspecialchars(request("montantSortie")),
+                    "dateRea" => htmlspecialchars(request("dateRea")),
+                    "observationRea" => htmlspecialchars(request("observation")),
+                    "codePrevision" => htmlspecialchars(request("codePrevisionPost")),
+                    "autorise_par" => htmlspecialchars(request("effectuer_par")),
+                    "effectuer_par" => htmlspecialchars(request("autorise_par"))
+                ]);
             $msg = $request->session()->flash('msgUpdateRealisation', "Modification effectuer avec succes !");
             return redirect()->back();
-       }
-
-
+        }
     }
 
     public function insert(Request $request)
     {
 
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
-        $nbre = Realisation::where('isDelete',0)->count();
-        $reff = "MVT".date("d").date('m').date('y').date('H').date('i').date('s').date('v').(++$nbre);
+        $nbre = Realisation::where('isDelete', 0)->count();
+        $reff = "MVT" . date("d") . date('m') . date('y') . date('H') . date('i') . date('s') . date('v') . (++$nbre);
 
         $montantSortie = htmlspecialchars(request("montant"));
         $dateRea = htmlspecialchars(request("datarea"));
@@ -343,7 +323,7 @@ class RealisationController extends Controller
         $employe_effectuer = htmlspecialchars(request("employe_effectuer"));
         $employe_autorise = htmlspecialchars(request("employe_autorise"));
         $fonction = new myFonction;
-        
+
         $post  = $fonction->getPost(htmlspecialchars(request("post")))->first();
         $prevision = $post->idPrevision;
         $realisation  = new realisation;
@@ -365,7 +345,7 @@ class RealisationController extends Controller
         $mvt_compte->libelle = $observation;
         $mvt_compte->sens = 'Debit';
         $mvt_compte->description = $observation;
-        $mvt_compte->reffCompte= htmlspecialchars(request('compteConcern'));
+        $mvt_compte->reffCompte = htmlspecialchars(request('compteConcern'));
         $mvt_compte->date_mvt = $dateRea;
         $mvt_compte->codeBranch = session('BranchCode');
         $mvt_compte->isDelete = 0;
@@ -375,7 +355,6 @@ class RealisationController extends Controller
 
         session()->flash('addSucceedMvt', "Operation effectuer avec succes");
         return redirect()->back();
-
     }
 
     public function printSearchpdf()
@@ -384,7 +363,7 @@ class RealisationController extends Controller
         $debut = session('printsearchListDateDebut');
         $fin = session('printsearchListDateFin');
         $lePost = session('printsearchListPost');
-        $pdf = PDF::loadView("realisation/printSearch",compact('mouvement','debut','fin','lePost'))->setPaper('A4', 'landscape');
+        $pdf = PDF::loadView("realisation/printSearch", compact('mouvement', 'debut', 'fin', 'lePost'))->setPaper('A4', 'landscape');
         return $pdf->stream('Prevalidationforme.pdf');
     }
 
@@ -392,8 +371,7 @@ class RealisationController extends Controller
     public function import()
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
         return view("realisation/importer");
@@ -401,20 +379,18 @@ class RealisationController extends Controller
     public function importTraitement(Request $request)
     {
         $fonction = new myFonction();
-        if($fonction->isInSession())
-        {
+        if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
         $path = $request->file('csv_file')->getRealPath();
         $data = array_map('str_getcsv', file($path));
 
-        while(count($data)>0)
-        {
+        while (count($data) > 0) {
             // code || montant || exercice || Observation
             $dat  = array_shift($data);
             $ligne  = explode(';', $dat[0]);
-            $nbre = Realisation::where('isDelete',0)->count();
-            $reff = "MVT".date("d").date('m').date('y').date('H').date('i').date('s').date('v').(++$nbre);
+            $nbre = Realisation::where('isDelete', 0)->count();
+            $reff = "MVT" . date("d") . date('m') . date('y') . date('H') . date('i') . date('s') . date('v') . (++$nbre);
             $post = $fonction->getPost($ligne[2])->first();
             $realisation  = new realisation;
             $realisation->refferenceRea  = $reff;
@@ -430,8 +406,4 @@ class RealisationController extends Controller
         session()->flash('importSuccess', "Operation effectuer avec succes");
         return redirect()->back();
     }
-
 }
-
-
-
