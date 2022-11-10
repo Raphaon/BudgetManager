@@ -78,7 +78,6 @@ class PrevisionController extends Controller
             ->distinct('AnneeExercice')
             ->where('codeExercice', session('codeExo'))
             ->get();
-
         return view('./prevision.update', compact('prevision', 'exercice'));
     }
 
@@ -166,6 +165,46 @@ class PrevisionController extends Controller
             session()->flash('UpdatePrevi', "Opérationde mise à jour effectué avec succes");
             return redirect()->back();
         }
+
+    }
+
+
+
+
+
+    public  function importPrevisionUpdateFile(){
+
+        return view('./Prevision/importUpdate');
+    }
+
+
+
+
+    public function importPrevisionUpdateFileTraitement(Request $request){
+
+        $path = $request->file('csv_file')->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+        while (count($data) > 0) {
+            // code || montant || exercice || Observation
+            $dat  = array_shift($data);
+            $ligne  = explode(";", $dat[0]);
+
+            $previ= Prevision::where("idPrevision", $ligne[0])
+                ->where('isDelete', 0)
+                ->update([
+                    "montantPrevision" => $ligne[2],
+                ]);
+
+            if($previ)
+                {
+                    session()->flash('UpdatePrevi', "Opérationde mise à jour effectué avec succes");
+                    return redirect()->back();
+                }
+
+
+           
+        }
+        
 
     }
 

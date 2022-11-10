@@ -151,10 +151,7 @@ Route::get('/realisation/delete/{slug}', [
     'uses' => 'RealisationController@delete'
 ]);
 
-Route::get('/prevision/{idprev}', [
-    'as' => 'previsonUpdate',
-    'uses' => 'PrevisionController@update'
-]);
+
 
 
 Route::post('/prevision/saveUpdate', [
@@ -240,6 +237,22 @@ Route::get('/prevision/export', [
     'as' => 'exporterPrevision',
     'uses' => 'PrevisionController@export'
 ]);
+
+
+Route::get('/prevision/importUpdateFile', [
+    'as' => 'importPreviUpdateFile',
+    'uses' => 'PrevisionController@importPrevisionUpdateFile'
+]);
+
+
+
+Route::post('/prevision/importUpdateFiletraitement', [
+    'as' => 'importPreviUpdateFiletraitement',
+    'uses' => 'PrevisionController@importPrevisionUpdateFileTraitement'
+]); 
+
+
+
 
 
 Route::get('/prevision/import', [
@@ -345,4 +358,10 @@ Route::get('/account/transfer', [
 Route::get('/account/deposite', [
     'as' => 'depositeToAccount',
     'uses' => 'CompteController@deposite'
+]);
+
+
+Route::get('/prevision/{idprev}', [
+    'as' => 'previsonUpdate',
+    'uses' => 'PrevisionController@update'
 ]);

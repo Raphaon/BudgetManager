@@ -30,6 +30,16 @@
         <ul class="nav navbar-nav">
           <li class="active"><a href="{{ route('home') }}">Aceuil <span class="sr-only">(current)</span></a></li>
           <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prevision<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{{ route('importPreviUpdateFile') }}">import File Update</a></li>
+                      <li role="separator" class="divider"></li>
+                    
+
+
+                    </ul>
+            </li>
+          <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Realisation <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="{{ route('sortiefonds') }}">Sortie de fonds</a></li>
