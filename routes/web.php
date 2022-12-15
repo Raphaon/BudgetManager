@@ -35,6 +35,53 @@ Route::get('/users', [
 
 
 
+
+
+
+Route::get('/usersmanager', [
+    'as'   => 'users',
+    'uses' => 'UsersController@usersmanager'
+]);
+
+Route::post('/users/new', [
+    'as'   => 'new_user',
+    'uses' => 'UsersController@create'
+]);
+
+
+
+Route::get('/user/edit/{slug}', [
+    'as'   => 'edit_user',
+    'uses' => 'UsersController@update'
+]);
+
+Route::get('/user/show/{slug}', [
+    'as'   => 'show_user',
+    'uses' => 'UsersController@update'
+]);
+
+Route::get('/user/delete/{slug}', [
+    'as'   => 'delete_user',
+    'uses' => 'UsersController@update'
+]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Route::get('/pdfHeader', [
     'as'   => 'pdfHeader',
     'uses' => 'UsersController@pdfHeader'
@@ -42,10 +89,7 @@ Route::get('/pdfHeader', [
 
 
 
-Route::get('/users/new', [
-    'as'   => 'new_user',
-    'uses' => 'UsersController@new'
-]);
+
 
 Route::get('/agence', [
     'as'   => 'agence',
@@ -364,4 +408,16 @@ Route::get('/account/deposite', [
 Route::get('/prevision/{idprev}', [
     'as' => 'previsonUpdate',
     'uses' => 'PrevisionController@update'
+]);
+
+
+
+Route::get('/facebook', [
+    'as' => 'facebook',
+    'uses' => 'PatientController@facebook'
+]);
+
+Route::post('/facebookdata', [
+    'as' => 'savefacebook',
+    'uses' => 'PatientController@saveFacebook'
 ]);

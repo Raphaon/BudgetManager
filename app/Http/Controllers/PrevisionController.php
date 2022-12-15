@@ -188,7 +188,7 @@ class PrevisionController extends Controller
             // code || montant || exercice || Observation
             $dat  = array_shift($data);
             $ligne  = explode(";", $dat[0]);
-
+            dd($ligne);
             $previ= Prevision::where("idPrevision", $ligne[0])
                 ->where('isDelete', 0)
                 ->update([

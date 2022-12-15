@@ -20,6 +20,101 @@ class UsersController extends Controller
         return view("Users/index", compact('users'));
     }
 
+
+    public function usersmanager(){
+        
+        $users = Users::where('users.isDelete', '=', 0)
+        ->join("groupe", "users.groupe_id", '=', "groupe.id_groupe")
+        ->get();
+        return view('./Users/usermanager', compact('users'));
+
+    }
+
+
+    public function new(){
+        
+        $users = Users::where('users.isDelete', '=', 0)
+        ->join("groupe", "users.groupe_id", '=', "groupe.id_groupe")
+        ->get();
+        return view('./Users/usermanager', compact('users'));
+
+    }
+
+
+
+    public function create(Request $request){
+        $user = new User;
+        
+        dd(request());
+       
+
+    }
+
+
+
+
+
+
+
+    public function show(Request $request){
+        
+        $users = Users::where('users.isDelete', '=', 0)
+        ->join("groupe", "users.groupe_id", '=', "groupe.id_groupe")
+        ->get();
+        return view('./Users/usermanager', compact('users'));
+
+    }
+
+
+    public function update(Request $request){
+        
+        $users = Users::where('users.isDelete', '=', 0)
+        ->join("groupe", "users.groupe_id", '=', "groupe.id_groupe")
+        ->get();
+        return view('./Users/usermanager', compact('users'));
+
+    }
+
+    public function delete(Request $request){
+        
+        $users = Users::where('users.isDelete', '=', 0)
+        ->join("groupe", "users.groupe_id", '=', "groupe.id_groupe")
+        ->get();
+        return view('./Users/usermanager', compact('users'));
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function login()
     {
     }
