@@ -68,7 +68,30 @@ Route::get('/user/delete/{slug}', [
 
 
 
+Route::get('/patients', [
+    'as'   => 'patientList',
+    'uses' => 'PatientController@index'
+]);
 
+
+
+Route::post('/patient/new', [
+    'as'   => 'savePatient',
+    'uses' => 'PatientController@create'
+]);
+
+
+Route::get('/patient/new', [
+    'as'   => 'newPatient',
+    'uses' => 'PatientController@new'
+]);
+
+
+
+Route::get('/patient/parameter/{slug}', [
+    'as'   => 'takeparameter',
+    'uses' => 'PatientController@takeparameter'
+]);
 
 
 

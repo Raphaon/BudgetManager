@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use User;
-class Patient extends User
+use App\Models\Users;
+
+class Patient extends Users
 {
     protected $table ="patient";
     protected $matricule;

@@ -43,10 +43,28 @@ class UsersController extends Controller
 
 
     public function create(Request $request){
-        $user = new User;
+
+        $checkExist = Users::where('users.isDelete', "=",0)
+                    ->where("users.login", '=', request('login'))
+                    ->first();
+        $msg  = "Echec D'enregistrment ! \n l'utilisateur existe déjà ou le mot de passe ne correspond pas ! ";
+        if( ($checkExist) && (request('password') == request('cpassword'))){
+            $user = new Users;
+            $user->user_id = "U".date('Ymdhsi');
+            $user->login = request('login');
+            $user->userspass =sha1(request('password'));
+            $user->users_name = request('fullName');
+            $user->users_surname = "unknow";
+            $user->groupe_id = 2;
+            $user->question = request('question');
+            $user->reponse = request('reponse');
+            if($user->save()){
+
+                $msg = "Opération reussi ! ";
+            }
+        }
+        return redirect()->back();
         
-        dd(request());
-       
 
     }
 
