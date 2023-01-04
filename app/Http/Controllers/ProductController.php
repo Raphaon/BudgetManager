@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\typeProduct;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,7 +15,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::join("typeproduct", "typeproduct.codeType", "=","product.productTypeReff")
+        ->get();
+        $typeProducts = typeProduct::get();
+        return view('Products/products', compact('products', "typeProducts"));
     }
 
     /**
@@ -36,6 +40,20 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+        $msg = "Echec de l'opération ";
+        $product = new Product;
+        $product->productCode = request('codeproduct');
+        $product->Designation = request('designation');
+        $product->purchasePrice = request('purchasingPrice');
+        $product->sellingPrice = request('priceOfSaling');
+        $product->marque = request('brand');
+        $product->description = request('description');
+        $product->color = request('color');
+        $product->productTypeReff = request('typeProd');
+        if($product->save()){
+            $msg = "Opération reussi !";
+        }
+      return redirect()->back()->with($msg);
     }
 
     /**
@@ -81,5 +99,15 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+
+
+    public function pointOfSale(){
+        $products = Product::join("typeproduct", "typeproduct.codeType", "=","product.productTypeReff")
+        ->get();
+        $typeProducts = typeProduct::get();
+
+        return view('./Pos/pointOfSale', compact('products', "typeProducts"));
     }
 }

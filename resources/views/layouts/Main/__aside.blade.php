@@ -114,6 +114,66 @@
           </li>
           
 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+               Gestion des produits 
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('products')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Produits</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('product-type') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Type de Produit</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/tables/jsgrid.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>jsGrid</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+               Gestion des ventes
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('products')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Produits</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('product-type') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Type de Produit</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/tables/jsgrid.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>jsGrid</p>
+                </a>
+              </li>
+            </ul>
+          </li>
 
 
 

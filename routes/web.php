@@ -444,3 +444,36 @@ Route::post('/facebookdata', [
     'as' => 'savefacebook',
     'uses' => 'PatientController@saveFacebook'
 ]);
+
+
+
+
+Route::get('/product-type', [
+    'as' => 'product-type',
+    'uses' => 'ProductTypeController@index'
+]);
+
+
+Route::post('/product-type', [
+    'as' => 'new_typeProduct',
+    'uses' => 'ProductTypeController@store'
+]);
+
+
+
+Route::get('/products', [
+    'as' => 'products',
+    'uses' => 'ProductController@index'
+]);
+
+
+Route::post('/products_save', [
+    'as' => 'save_products',
+    'uses' => 'ProductController@store'
+]);
+
+
+Route::get('/pos', [
+    'as' => 'pointOfSale',
+    'uses' => 'ProductController@pointofsale'
+]);
