@@ -45,7 +45,24 @@ class PatientController extends Controller
                     $patient->patient_email = request('email');
                     $patient->patient_location = request('quarter');
                     $patient->patient_hobbies = request('hobbies');
-                    $patient->patient_picture = request('picture');
+
+              
+                    
+                    
+
+
+       
+            $patient->patient_picture = 'none';
+
+                    /**$request->validate([
+                        'picture' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+                    ]);
+            
+                    $imageName = time().'.'.$request->image->extension();
+                    // Public Folder
+                    $request->picture->move(public_path('images'), $imageName);
+                    $patient->patient_picture = $imageName;*/
+                    
                     $patient->patient_ice_name = request('icename');
                     $patient->patient_ice_phone = request('icephone');
                     if($patient->save()){
