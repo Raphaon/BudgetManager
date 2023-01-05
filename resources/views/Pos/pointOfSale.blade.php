@@ -15,18 +15,42 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="ligne_article_title">
-            Large Modal
+            Product Title
         </h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>One fine body&hellip;</p>
+            <div class="form-group">
+                <label for="purchasing-price"> Prix de vente </label>
+                <input type="number"   class="form-control" id="sellingprice" name="purchasingPrice" placeholder="Prix D'achat">
+              </div>
+
+              <div class="form-group">
+                <label for="priceOfSaling"> Quantité </label>
+                <input type="number" min=1 value="1" class="form-control" id="quantity" name="priceOfSaling" placeholder="Designation type produit ">
+              </div>
+
+              <div class="form-group">
+                <label for="priceOfSaling"> Remise </label>
+                <input type="number" class="form-control" id="priceOfSaling" name="priceOfSaling" placeholder="Designation type produit ">
+              </div>
+
+              <div class="form-group">
+                <label for="priceOfSaling"> Avance </label>
+                <input type="number" class="form-control" id="priceOfSaling" name="priceOfSaling" placeholder="Designation type produit ">
+              </div>
+
+              <div class="form-group">
+                <label for="priceOfSaling"> total </label>
+                <input type="number" readonly class="form-control" id="totalPrice" name="priceOfSaling" placeholder="Designation type produit ">
+              </div>
+
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-success">Ajouter</button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -35,8 +59,8 @@
   </div>
 
 
-  
-  
+
+
 
 
 
@@ -44,13 +68,13 @@
 
     <div class="row">
       <div class="col-7">
-        
+
         <!-- /.card -->
 
         <div class="card">
           <div class="card-header">
             <h3 class="card-title"> <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg">
-                <i class="fas fa-plus"></i>  Ajouter un Produit 
+                <i class="fas fa-plus"></i>  Ajouter un Produit
             </button></h3>
           </div>
           <!-- /.card-header -->
@@ -58,16 +82,16 @@
             <table id="pointOfSale" class="table table-bordered table-striped">
               <thead>
               <tr>
-                
+                <th>#  </th>
                 <th>CODE PRODUIT</th>
                 <th>DESIGNATION </th>
                 <th>PRIX ACHAT </th>
                 <th>PRIX VENTE </th>
                 <th>MARQUE </th>
-              
+
                 <th>COULEUR </th>
                 <th>TYPE  </th>
-                <th>#  </th>
+
               </tr>
               </thead>
               <tbody>
@@ -75,41 +99,44 @@
                 $id = 1;
             @endphp
             @foreach ($products as $key=>$produit )
-              <a href="http://">
+
                 <tr>
-                    
+                    <td><button id="{{ $produit->productCode }}"
+                                onclick="addProduct({{ $produit }})"
+                                class="btn btn-secondary"
+                                data-toggle="modal"
+                                data-target="#modal-lg-prod"> <i class="fas fa-plus"></i></button></td>
                     <td>{{$produit->productCode}}</td>
                     <td>{{ $produit->Designation }}</td>
                     <td>{{$produit->purchasePrice}}</td>
                     <td>{{ $produit->sellingPrice }}</td>
                     <td>{{$produit->marque}}</td>
-                  
                     <td>{{ $produit->color    }}</td>
                     <td>{{ $produit->label    }}</td>
-                    <td><button href="#" data="{{$produit }}" onclick="addProduct({{$produit }})" class="btn btn-secondary" data-toggle="modal" data-target="#modal-lg-prod"> <i class="fas fa-plus"></i></button></td>
-              
+
+
                 </tr>
-            
-            </a>
-              
+
+
+
               @php
                     $id ++;
                 @endphp
               @endforeach
-              
+
               </tbody>
               <tfoot>
                 <tr>
-            
+                    <th>#  </th>
                     <th>CODE PRODUIT</th>
                     <th>DESIGNATION </th>
                     <th>PRIX A </th>
                     <th>PRIX VENTE </th>
                     <th>MARQUE </th>
-                    
+
                     <th>COULEUR </th>
                     <th>TYPE  </th>
-                    <th>#  </th>
+
                   </tr>
               </tfoot>
             </table>
@@ -128,7 +155,7 @@
 
 
       <div class="col-4">
-        
+
         <!-- /.card -->
 
         <div class="card">
@@ -145,7 +172,7 @@
                 <th>PRIX VENTE </th>
                 <th>COULEUR </th>
                 <th>TYPE  </th>
-            
+
               </tr>
               </thead>
               <tbody>
@@ -153,33 +180,33 @@
                 $id = 1;
             @endphp
             @foreach ($products as $key=>$produit )
-              
+
               <tr>
                 <td>{{ $id }}</td>
                 <td>{{$produit->productCode}}</td>
                 <td>{{ $produit->Designation }}</td>
-                
+
                 <td>{{ $produit->color    }}</td>
                 <td>{{ $produit->label    }}</td>
-               
-          
+
+
               </tr>
               @php
                     $id ++;
                 @endphp
               @endforeach
-              
+
               </tbody>
               <tfoot>
                 <tr>
                     <th>N°</th>
                     <th>CODE PRODUIT</th>
-                    
+
                     <th>PRIX VENTE </th>
                     <th>MARQUE </th>
                     <th>DESCRIPTION </th>
-                    
-                  
+
+
                   </tr>
               </tfoot>
             </table>
@@ -193,17 +220,17 @@
     </div>
 
 
-    
+
     <!-- /.row -->
   </div>
   <!-- /.container-fluid -->
-  
 
 
-  
 
 
-  
+
+
+
 
 
 
@@ -225,12 +252,12 @@
         <div class="modal-body">
 
 
-        
+
                 <!-- general form elements -->
                 <div class="card card-primary">
-                
+
                   <!-- /.card-header -->
-                 
+
                     <div class="card-body">
                       <div class="form-group">
                         <label for="FullName">Code Produit  </label>
@@ -264,7 +291,7 @@
                         <label for="color"> Couleur </label>
                         <input type="color" class="form-control" id="color" name="color" placeholder="Designation type produit ">
                       </div>
-                      
+
 
                       <div class="form-group">
                         <label for="typeProd">Type de produits </label>
@@ -274,14 +301,14 @@
                                 <option value="{{ $type->codeType }}"> {{ $type->label }} </option>
                             @endforeach
                         </select>
-                      
+
                       </div>
 
-                    
+
                     </div>
-                
-    
-                 
+
+
+
                 </div>
 
         </div>
@@ -301,8 +328,8 @@
   </div>
   <!-- /.modal -->
 
-  
- 
+
+
 
 
 
