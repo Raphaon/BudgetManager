@@ -477,3 +477,23 @@ Route::get('/pos', [
     'as' => 'pointOfSale',
     'uses' => 'ProductController@pointofsale'
 ]);
+
+
+
+
+Route::get('/getServices', [
+    'as' => 'getServices',
+    'uses' => 'ServicesController@getServices'
+]);
+
+
+Route::get('/services', [
+    'as' => 'services',
+    'uses' => 'ServicesController@index'
+]);
+
+
+Route::get('/prescribers', [
+    'as' => 'prescribers',
+    'uses' => 'PrescriberController@index'
+]);

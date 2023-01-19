@@ -33,24 +33,24 @@
               </div>
 
               <div class="form-group">
-                <label for="priceOfSaling"> Remise </label>
-                <input type="number" class="form-control" id="priceOfSaling" name="priceOfSaling" placeholder="Designation type produit ">
+                <label for="discount"> Remise </label>
+                <input type="number" class="form-control" id="discount" name="discount" placeholder="Designation type produit ">
               </div>
 
               <div class="form-group">
-                <label for="priceOfSaling"> Avance </label>
-                <input type="number" class="form-control" id="priceOfSaling" name="priceOfSaling" placeholder="Designation type produit ">
+                <label for="avance"> Avance </label>
+                <input type="number" class="form-control" id="avance" name="avance" placeholder="Designation type produit ">
               </div>
 
               <div class="form-group">
-                <label for="priceOfSaling"> total </label>
-                <input type="number" readonly class="form-control" id="totalPrice" name="priceOfSaling" placeholder="Designation type produit ">
+                <label for="totalPrice"> total </label>
+                <input type="number" readonly class="form-control" id="totalPrice" name="totalPrice" placeholder="Designation type produit ">
               </div>
 
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-success">Ajouter</button>
+          <button type="button" id="addbtn" class="btn btn-success">Ajouter</button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -102,7 +102,7 @@
 
                 <tr>
                     <td><button id="{{ $produit->productCode }}"
-                                onclick="addProduct({{ $produit }})"
+                                onclick="selectProduct({{ $produit }})"
                                 class="btn btn-secondary"
                                 data-toggle="modal"
                                 data-target="#modal-lg-prod"> <i class="fas fa-plus"></i></button></td>
@@ -168,39 +168,25 @@
               <thead>
               <tr>
                 <th>N°</th>
-                <th>PRIX ACHAT </th>
-                <th>PRIX VENTE </th>
-                <th>COULEUR </th>
-                <th>TYPE  </th>
-
+              
+                <th>DESIGNATION </th>
+                <th>QUANTITE</th>
+                <th>PU  </th>
+                <th>Prix Total  </th>
               </tr>
               </thead>
-              <tbody>
-            @php
-                $id = 1;
-            @endphp
-            @foreach ($products as $key=>$produit )
+              <tbody id="articleTAdded">
+            
+       
 
-              <tr>
-                <td>{{ $id }}</td>
-                <td>{{$produit->productCode}}</td>
-                <td>{{ $produit->Designation }}</td>
-
-                <td>{{ $produit->color    }}</td>
-                <td>{{ $produit->label    }}</td>
-
-
-              </tr>
-              @php
-                    $id ++;
-                @endphp
-              @endforeach
+              
+             
 
               </tbody>
               <tfoot>
                 <tr>
                     <th>N°</th>
-                    <th>CODE PRODUIT</th>
+              
 
                     <th>PRIX VENTE </th>
                     <th>MARQUE </th>
