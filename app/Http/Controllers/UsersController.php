@@ -13,7 +13,7 @@ class UsersController extends Controller
         $users = Users::where('users.isDelete', '=', 0)
             ->join("groupe", "users.groupe_id", '=', "groupe.id_groupe")
             ->join('employe', "employe.matriculeEmp", '=', 'users.employeeID')
-            ->join('service', "service.service_id", '=', 'employe.serviceID')
+            ->join('services', "services.service_id", '=', 'employe.serviceID')
             ->join("fonction", "fonction.codeFon", '=', 'employe.fonctionID')
             ->join("agence", "agence.codeAg", '=', 'employe.branchID')
             ->get();

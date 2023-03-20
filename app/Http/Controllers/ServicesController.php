@@ -13,8 +13,8 @@ class ServicesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-    
-        return view('./Services/index');
+        $services = Service::where("branchConcern", "=", session('BranchCode'))->get();
+        return view('./Services/index', compact('services'));
     }
 
 

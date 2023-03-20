@@ -492,6 +492,46 @@ Route::get('/services', [
     'uses' => 'ServicesController@index'
 ]);
 
+Route::get('/services/new', [
+    'as' => 'services',
+    'uses' => 'ServicesController@create'
+]);
+
+Route::get('/services/update/{id}', [
+    'as' => 'services',
+    'uses' => 'ServicesController@update'
+]);
+
+Route::get('/services/delete/{id}', [
+    'as' => 'services',
+    'uses' => 'ServicesController@delete'
+]);
+
+
+
+
+Route::get('/services', [
+    'as' => 'services',
+    'uses' => 'ServicesController@index'
+]);
+
+Route::get('/services/new', [
+    'as' => 'services',
+    'uses' => 'ServicesController@create'
+]);
+
+Route::get('/services/update/{id}', [
+    'as' => 'services',
+    'uses' => 'ServicesController@update'
+]);
+
+Route::get('/services/delete/{id}', [
+    'as' => 'services',
+    'uses' => 'ServicesController@delete'
+]);
+
+
+
 
 Route::get('/prescribers', [
     'as' => 'prescribers',

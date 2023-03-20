@@ -13,6 +13,7 @@ class AgenceController extends Controller
     public function index()
     {
         $fonction = new myFonction();
+   
         if($fonction->isInSession())
         {
             return  redirect()->to("login");
