@@ -1,11 +1,24 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Realisation extends Model
 {
-    protected $table ='prevision';
-    public $timestamps = 0;
+    protected $table = 'realisation';
+
+    protected $primaryKey = 'refferenceRea';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'montantRea',
+        'dateRea',
+        'observationRea',
+        'codePrevision',
+        'isDelete',
+        'autorise_par',
+        'effectuer_par',
+    ];
 }

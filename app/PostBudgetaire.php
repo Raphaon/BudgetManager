@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class PostBudgetaire extends Model
 {
     protected $table = 'postbudgetaire';
-    public $timestamps = 0;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'numCompte',
+        'intitulePost',
+        'isDelete',
+    ];
 
     public function isExist()
     {
