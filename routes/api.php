@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\BudgetAnalyticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/test', function (){
-    $users = array('login' =>"rapha" ,  "password"=>"test");
-       return response()->json($users);
+Route::get('/test', function () {
+    $users = array('login' => "rapha",  "password" => "test");
+    return response()->json($users);
+});
+
+Route::prefix('budget')->group(function () {
+    Route::get('snapshot', [BudgetAnalyticsController::class, 'snapshot']);
+    Route::get('comparison', [BudgetAnalyticsController::class, 'comparison']);
+    Route::get('report', [BudgetAnalyticsController::class, 'report']);
+    Route::get('alerts', [BudgetAnalyticsController::class, 'alerts']);
+    Route::post('scenario', [BudgetAnalyticsController::class, 'scenario']);
 });
