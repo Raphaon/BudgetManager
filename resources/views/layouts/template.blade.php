@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../css/bootstrap.css">
-    <link rel="stylesheet" href="../css/dataTables.bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <meta name="_token" content="{{ csrf_token() }}">
 
     <title>Voucher - {{ $sb_title }}</title>
+    @stack('styles')
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -153,10 +154,11 @@
 </div>
 
 
-  <script src="js/jquery-3.3.1.min.js"></script>
-  <script src="js/bootstrap.js"></script>
-  <script src="js/jquery.dataTables.js"></script>
-  <script src="js/dataTables.bootstrap.js"></script>
-  <script src="js/scriptCategorie.js"></script>
+  <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap.js') }}"></script>
+  <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
+  <script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
+  <script src="{{ asset('js/scriptCategorie.js') }}"></script>
+  @stack('scripts')
 </body>
 </html>

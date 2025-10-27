@@ -7,6 +7,7 @@ use App\Prevision;
 use App\Agence;
 use App\realiastion;
 use App\myFonction;
+use Carbon\Carbon;
 use DB;
 use PDF;
 
@@ -19,31 +20,40 @@ class StatistiquesController extends Controller
         if ($fonction->isInSession()) {
             return  redirect()->to("login");
         }
-        $montantTotalPrevionAnnuelle = session('montantTotalPrevionAnnuelle');
-        $montantTotalRealisationAnnuelle = session("montantTotalRealisationAnnuelle");
-        $dateDebut = date('Y') . '/' . date('m') . '/' . '01';
-        $datefin = date('Y') . '/' . date('m') . '/' . date('d');
+        Carbon::setLocale('fr');
+
+        $montantTotalPrevionAnnuelle = (float) session('montantTotalPrevionAnnuelle', 0);
+        $montantTotalRealisationAnnuelle = (float) session('montantTotalRealisationAnnuelle', 0);
+
+        $dateDebut = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $datefin = Carbon::now()->endOfDay()->format('Y-m-d');
 
         $montantTotalRealisationMensuel = DB::table('realisation')
             ->where('realisation.isDelete', 0)
-            ->leftJoin('prevision', 'Prevision.idPrevision', "=", "realisation.codePrevision")
-            ->where('exercicePrevi', session("codeExo"))
+            ->leftJoin('prevision', 'Prevision.idPrevision', '=', 'realisation.codePrevision')
+            ->where('exercicePrevi', session('codeExo'))
             ->whereBetween('dateRea', [$dateDebut, $datefin])
-            ->SUM("montantRea");
+            ->sum('montantRea');
 
+        $budgetSide = session('budgetSide');
 
-        $budgetSide = session("budgetSide");
+        $monthlyLabels = [];
+        $monthlyRealisation = [];
+        $monthlyTarget = $montantTotalPrevionAnnuelle > 0 ? $montantTotalPrevionAnnuelle / 12 : 0;
 
-        for ($i = 1; $i <= date("m"); $i++) {
-            $dateDebut =  $dateDebut = date('Y') . '-' . $i . '-' . '01';
-            $dateFin = date('Y-m-t', strtotime($dateDebut));
+        for ($i = 1; $i <= 12; $i++) {
+            $monthStart = Carbon::create((int) date('Y'), $i, 1)->startOfMonth();
+            $monthEnd = (clone $monthStart)->endOfMonth();
+
             $realisationMois = DB::table('realisation')
                 ->where('realisation.isDelete', 0)
-                ->leftJoin('prevision', 'Prevision.idPrevision', "=", "realisation.codePrevision")
-                ->where('exercicePrevi', session("codeExo"))
-                ->whereBetween('dateRea', [$dateDebut, $dateFin])
-                ->SUM("montantRea");
-            $tabReaAnnuel[$i - 1] = $realisationMois / 1000;
+                ->leftJoin('prevision', 'Prevision.idPrevision', '=', 'realisation.codePrevision')
+                ->where('exercicePrevi', session('codeExo'))
+                ->whereBetween('dateRea', [$monthStart->format('Y-m-d'), $monthEnd->format('Y-m-d')])
+                ->sum('montantRea');
+
+            $monthlyLabels[] = ucfirst($monthStart->translatedFormat('F'));
+            $monthlyRealisation[] = (float) $realisationMois;
         }
         $post =  DB::table("postbudgetaire")->select('*')
             ->whereIn('numCompte', function ($query) {
@@ -56,7 +66,75 @@ class StatistiquesController extends Controller
             ->where('prevision.exercicePrevi', session('codeExo'))
             ->orderBy("numCompte", "ASC")
             ->get();
-        return view("index", compact('post', 'montantTotalPrevionAnnuelle', 'montantTotalRealisationAnnuelle', 'montantTotalRealisationMensuel', 'budgetSide', 'tabReaAnnuel'));
+        $annualGap = $montantTotalPrevionAnnuelle - $montantTotalRealisationAnnuelle;
+        $monthlyGap = $monthlyTarget - $montantTotalRealisationMensuel;
+
+        $annualProgress = $montantTotalPrevionAnnuelle > 0
+            ? max(0, min(100, ($montantTotalRealisationAnnuelle / $montantTotalPrevionAnnuelle) * 100))
+            : 0;
+
+        $monthlyProgress = $monthlyTarget > 0
+            ? max(0, min(100, ($montantTotalRealisationMensuel / $monthlyTarget) * 100))
+            : 0;
+
+        $postCollection = collect($post);
+
+        $postsWithStats = $postCollection->map(function ($item) use ($fonction) {
+            $previsionAnnuelle = (float) $fonction->PreviAnnuelPost($item->numCompte, session('codeExo'));
+            $realisationAnnuelle = (float) $fonction->ReaAnnuelPost($item->numCompte, session('codeExo'));
+
+            $debutPeriod = Carbon::now()->startOfMonth()->format('Y-m-d');
+            $finPeriode = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+            $realisationMensuelle = (float) $fonction->MontantReaPostSurPeriodDe(
+                session('codeExo'),
+                $debutPeriod,
+                $finPeriode,
+                $item->numCompte
+            );
+
+            $previsionMensuelle = $previsionAnnuelle > 0 ? $previsionAnnuelle / 12 : 0;
+
+            $annualRatio = $previsionAnnuelle > 0 ? ($realisationAnnuelle / $previsionAnnuelle) * 100 : 0;
+            $monthlyRatio = $previsionMensuelle > 0 ? ($realisationMensuelle / $previsionMensuelle) * 100 : 0;
+
+            return [
+                'code' => $item->numCompte,
+                'label' => $item->intitulePost,
+                'prevision_annuelle' => $previsionAnnuelle,
+                'realisation_annuelle' => $realisationAnnuelle,
+                'prevision_mensuelle' => $previsionMensuelle,
+                'realisation_mensuelle' => $realisationMensuelle,
+                'annual_ratio' => $annualRatio,
+                'monthly_ratio' => $monthlyRatio,
+            ];
+        });
+
+        $topPosts = $postsWithStats->sortByDesc('annual_ratio')->take(5)->values();
+
+        $alertPosts = $postsWithStats
+            ->filter(function ($stats) {
+                return $stats['monthly_ratio'] >= 100 || $stats['annual_ratio'] >= 100;
+            })
+            ->sortByDesc('annual_ratio')
+            ->values();
+
+        return view('index', compact(
+            'post',
+            'montantTotalPrevionAnnuelle',
+            'montantTotalRealisationAnnuelle',
+            'montantTotalRealisationMensuel',
+            'budgetSide',
+            'monthlyLabels',
+            'monthlyRealisation',
+            'monthlyTarget',
+            'annualGap',
+            'monthlyGap',
+            'annualProgress',
+            'monthlyProgress',
+            'topPosts',
+            'alertPosts'
+        ));
     }
 
 
